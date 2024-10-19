@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  teachertools:
+  web:
     build:
       context: .
       dockerfile: ./TeacherTools/TeacherTools/Dockerfile  # Update the path to your Dockerfile
