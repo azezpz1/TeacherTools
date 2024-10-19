@@ -7,6 +7,7 @@
     <UserSecretsId>aspnet-TeacherTools-084e74fa-f834-4b09-ba7c-f9e3d9784869</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
