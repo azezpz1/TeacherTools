@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeacherTools", "TeacherTools\TeacherTools\TeacherTools.csproj", "{90D242F0-AB36-4854-9346-274E0EDF44F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeacherTools.Client", "TeacherTools\TeacherTools.Client\TeacherTools.Client.csproj", "{F839091D-BDD0-4B00-9392-AA4671297FF8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90D242F0-AB36-4854-9346-274E0EDF44F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90D242F0-AB36-4854-9346-274E0EDF44F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90D242F0-AB36-4854-9346-274E0EDF44F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90D242F0-AB36-4854-9346-274E0EDF44F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F839091D-BDD0-4B00-9392-AA4671297FF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F839091D-BDD0-4B00-9392-AA4671297FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F839091D-BDD0-4B00-9392-AA4671297FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F839091D-BDD0-4B00-9392-AA4671297FF8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {16009C5C-3E01-4B45-B365-2988B46E5EB9}
+	EndGlobalSection
+EndGlobal
