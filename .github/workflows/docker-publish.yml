@@ -37,6 +37,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x' # Specify the .NET version you are using
+
+      - name: Install Core dependencies
+        run: dotnet restore TeacherTools/Core/Core.csproj
+
+      - name: Build the Core project
+        run: dotnet build TeacherTools/Core/Core.csproj --configuration Release --no-restore
+
+      - name: Run unit tests
+        run: dotnet test TeacherTools/CoreTests/CoreTests.csproj --no-restore --verbosity normal --configuration Release
+
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
