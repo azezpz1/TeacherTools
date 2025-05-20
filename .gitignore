@@ -1,0 +1,50 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the Go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Go workspace file
+go.work
+go.work.sum
+
+# Vendor directory (if using `go mod vendor`)
+/vendor/
+
+# Dependency directories (often used in legacy or GOPATH mode)
+/Godeps/
+pkg/
+bin/
+
+# IDE/editor folders
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Build directory if used
+/build/
+
+# Node modules (if using frontend assets)
+node_modules/
+
+# Environment variables
+.env
+.env.*
