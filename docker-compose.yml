@@ -1,0 +1,11 @@
+services:
+  teacher-tools-backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ${HOST_SA_KEY_PATH}:/app/credentials.json
+    env_file:
+      - .env
