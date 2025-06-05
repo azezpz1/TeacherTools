@@ -5,6 +5,7 @@ go 1.24.3
 require (
 	cloud.google.com/go/firestore v1.18.0
 	github.com/gin-gonic/gin v1.10.1
+	github.com/golang/mock v1.6.0
 	google.golang.org/api v0.235.0
 )
 
