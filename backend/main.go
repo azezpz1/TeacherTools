@@ -40,6 +40,10 @@ func main() {
 		})
 	})
 
+	r.POST("/signup", handlers.CreateAccountHandler(client))
+	r.POST("/login", handlers.LoginHandler(client))
+	r.POST("/logout", handlers.LogoutHandler())
+
 	r.GET("/student/teachers", handlers.GetTeachersForStudentHandler(client))
 
 	r.Run(":" + port)
