@@ -31,37 +31,35 @@ func TestGetTeachersForStudentHandler_MissingParams(t *testing.T) {
 	}
 }
 
-func TestGetTeachersForStudentHandler_StudentNotFound(t *testing.T) {
-	orig := fetchTeachersForStudent
-	fetchTeachersForStudent = func(ctx context.Context, client *firestore.Client, firstName, lastName string) ([]models.Teacher, error) {
-		return nil, ErrStudentNotFound
+func TestGetTeachersForStudentHandler_Errors(t *testing.T) {
+	testCases := []struct {
+		name           string
+		mockError      error
+		expectedStatus int
+	}{
+		{"Student Not Found", ErrStudentNotFound, http.StatusNotFound},
+		{"Internal Server Error", errors.New("boom"), http.StatusInternalServerError},
+		{"Missing Teacher IDs", ErrMissingTeacherIDs, http.StatusInternalServerError},
+		{"Invalid Teacher IDs", ErrInvalidTeacherIDs, http.StatusInternalServerError},
 	}
-	defer func() { fetchTeachersForStudent = orig }()
 
-	r := setupRouter(nil)
-	req, _ := http.NewRequest("GET", "/student/teachers?firstName=John&lastName=Doe", nil)
-	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			orig := fetchTeachersForStudent
+			fetchTeachersForStudent = func(ctx context.Context, client *firestore.Client, firstName, lastName string) ([]models.Teacher, error) {
+				return nil, tc.mockError
+			}
+			defer func() { fetchTeachersForStudent = orig }()
 
-	if w.Code != http.StatusNotFound {
-		t.Fatalf("expected status %d got %d", http.StatusNotFound, w.Code)
-	}
-}
+			r := setupRouter(nil)
+			req, _ := http.NewRequest("GET", "/student/teachers?firstName=John&lastName=Doe", nil)
+			w := httptest.NewRecorder()
+			r.ServeHTTP(w, req)
 
-func TestGetTeachersForStudentHandler_InternalError(t *testing.T) {
-	orig := fetchTeachersForStudent
-	fetchTeachersForStudent = func(ctx context.Context, client *firestore.Client, firstName, lastName string) ([]models.Teacher, error) {
-		return nil, errors.New("boom")
-	}
-	defer func() { fetchTeachersForStudent = orig }()
-
-	r := setupRouter(nil)
-	req, _ := http.NewRequest("GET", "/student/teachers?firstName=John&lastName=Doe", nil)
-	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
-
-	if w.Code != http.StatusInternalServerError {
-		t.Fatalf("expected status %d got %d", http.StatusInternalServerError, w.Code)
+			if w.Code != tc.expectedStatus {
+				t.Fatalf("expected status %d got %d", tc.expectedStatus, w.Code)
+			}
+		})
 	}
 }
 
