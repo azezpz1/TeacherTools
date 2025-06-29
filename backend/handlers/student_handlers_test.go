@@ -65,6 +65,40 @@ func TestGetTeachersForStudentHandler_InternalError(t *testing.T) {
 	}
 }
 
+func TestGetTeachersForStudentHandler_MissingTeacherIDs(t *testing.T) {
+	orig := fetchTeachersForStudent
+	fetchTeachersForStudent = func(ctx context.Context, client *firestore.Client, firstName, lastName string) ([]models.Teacher, error) {
+		return nil, ErrMissingTeacherIDs
+	}
+	defer func() { fetchTeachersForStudent = orig }()
+
+	r := setupRouter(nil)
+	req, _ := http.NewRequest("GET", "/student/teachers?firstName=John&lastName=Doe", nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusInternalServerError {
+		t.Fatalf("expected status %d got %d", http.StatusInternalServerError, w.Code)
+	}
+}
+
+func TestGetTeachersForStudentHandler_InvalidTeacherIDs(t *testing.T) {
+	orig := fetchTeachersForStudent
+	fetchTeachersForStudent = func(ctx context.Context, client *firestore.Client, firstName, lastName string) ([]models.Teacher, error) {
+		return nil, ErrInvalidTeacherIDs
+	}
+	defer func() { fetchTeachersForStudent = orig }()
+
+	r := setupRouter(nil)
+	req, _ := http.NewRequest("GET", "/student/teachers?firstName=John&lastName=Doe", nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusInternalServerError {
+		t.Fatalf("expected status %d got %d", http.StatusInternalServerError, w.Code)
+	}
+}
+
 func TestGetTeachersForStudentHandler_Success(t *testing.T) {
 	expected := []models.Teacher{{FirstName: "Jane", LastName: "Smith"}}
 	orig := fetchTeachersForStudent

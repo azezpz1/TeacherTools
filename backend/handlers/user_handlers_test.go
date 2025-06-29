@@ -61,6 +61,32 @@ func TestCreateAccountHandler_Conflict(t *testing.T) {
 	}
 }
 
+func TestCreateAccountHandler_InvalidJSON(t *testing.T) {
+	r := setupUserRouter(nil)
+	body := `{"email":"a@test.com","password":"pass"`
+	req, _ := http.NewRequest("POST", "/signup", strings.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Fatalf("expected %d got %d", http.StatusBadRequest, w.Code)
+	}
+}
+
+func TestCreateAccountHandler_MissingValues(t *testing.T) {
+	r := setupUserRouter(nil)
+	body := `{"email":"","password":"pass"}`
+	req, _ := http.NewRequest("POST", "/signup", strings.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Fatalf("expected %d got %d", http.StatusBadRequest, w.Code)
+	}
+}
+
 func TestLoginHandler_Success(t *testing.T) {
 	hashed, _ := bcrypt.GenerateFromPassword([]byte("pass"), bcrypt.DefaultCost)
 	origFetch := fetchUserByEmail
@@ -100,6 +126,51 @@ func TestLoginHandler_Invalid(t *testing.T) {
 
 	if w.Code != http.StatusUnauthorized {
 		t.Fatalf("expected %d got %d", http.StatusUnauthorized, w.Code)
+	}
+}
+
+func TestLoginHandler_UserNotFound(t *testing.T) {
+	orig := fetchUserByEmail
+	fetchUserByEmail = func(ctx context.Context, client *firestore.Client, email string) (models.User, error) {
+		return models.User{}, ErrUserNotFound
+	}
+	defer func() { fetchUserByEmail = orig }()
+
+	r := setupUserRouter(nil)
+	body := `{"email":"a@test.com","password":"pass"}`
+	req, _ := http.NewRequest("POST", "/login", strings.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusUnauthorized {
+		t.Fatalf("expected %d got %d", http.StatusUnauthorized, w.Code)
+	}
+}
+
+func TestLoginHandler_MissingValues(t *testing.T) {
+	r := setupUserRouter(nil)
+	body := `{"email":"","password":"pass"}`
+	req, _ := http.NewRequest("POST", "/login", strings.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Fatalf("expected %d got %d", http.StatusBadRequest, w.Code)
+	}
+}
+
+func TestLoginHandler_InvalidJSON(t *testing.T) {
+	r := setupUserRouter(nil)
+	body := `{"email":"a@test.com","password":"pass"`
+	req, _ := http.NewRequest("POST", "/login", strings.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Fatalf("expected %d got %d", http.StatusBadRequest, w.Code)
 	}
 }
 
