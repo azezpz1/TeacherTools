@@ -8,7 +8,7 @@ require (
 	github.com/golang/mock v1.6.0
 	golang.org/x/crypto v0.41.0
 	google.golang.org/api v0.248.0
-	google.golang.org/grpc v1.75.0
+	google.golang.org/grpc v1.75.1
 )
 
 require (
